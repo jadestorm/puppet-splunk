@@ -15,6 +15,7 @@ class splunk::forwarder::service::nix inherits splunk::forwarder::service {
       user    => $splunk::forwarder::splunk_user,
       creates => $splunk::forwarder::forwarder_service_file,
       timeout => 0,
+      require => Package[$splunk::forwarder::package_name],
       notify  => Exec['enable_splunkforwarder'],
       require => Package[$splunk::forwarder::package_name],
     }
