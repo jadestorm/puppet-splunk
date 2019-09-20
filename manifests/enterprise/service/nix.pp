@@ -16,6 +16,7 @@ class splunk::enterprise::service::nix inherits splunk::enterprise::service {
       creates => $splunk::enterprise::enterprise_service_file,
       timeout => 0,
       notify  => Exec['enable_splunk'],
+      require => Package[$splunk::enterprise::package_name],
     }
     # This will fail if the unit file already exists.  Splunk does not remove
     # unit files during uninstallation, so you may be required to manually
@@ -36,6 +37,7 @@ class splunk::enterprise::service::nix inherits splunk::enterprise::service {
     exec { 'disable_splunk':
       command => "${splunk::enterprise::enterprise_homedir}/bin/splunk disable boot-start -user ${splunk::enterprise::splunk_user} --accept-license --answer-yes --no-prompt",
       onlyif  => "/usr/bin/test -f ${splunk::enterprise::enterprise_service_file}",
+      require => Package[$splunk::enterprise::package_name],
     }
     # This will start splunkd and splunkweb in legacy mode assuming
     # appServerPorts is set to 0.
